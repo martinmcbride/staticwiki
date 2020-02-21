@@ -1,0 +1,151 @@
+<p><em>This article is part of a <a href="/python-libraries/numpy/contents/">series</a> on numpy.</em></p>
+<p>In this section we will learn how to use <strong>numpy</strong> to store and manipulate image data. We will use the <a href="/python-libraries/pillow/">Python Imaging
+library (PIL)</a> to read and write data to standard file formats.</p>
+<p>If you want to learn more about numpy in general, try the other <a href="/python-libraries/numpy/">tutorials</a>.</p>
+<p>Before trying these examples you will need to install the <strong>numpy</strong> and <strong>pillow</strong> packages (<strong>pillow</strong> is a fork
+of the <strong>PIL</strong> library).</p>
+<h2>Creating RGB Images</h2>
+<p>Here is a 5 by 4 pixel RGB image:</p>
+<p><img alt="" src="/img/numpy/rgb-image.png" /></p>
+<p>The image contains 4 lines of pixels. Each line of pixels contains 5 pixels. Each pixel contains 3 bytes (representing
+the red, green and blue values of the pixel colour):</p>
+<p><img alt="" src="/img/numpy/image-bytes.png" /></p>
+<p>RGB images are usually stored as 3 dimensional arrays of 8-bit unsigned integers. The shape of the array is:</p>
+<div class="codehilite"><pre><span></span>height x width x 3.
+</pre></div>
+
+
+<p>Here is how we create an array to represent a 5 pixel wide by 4 pixel high image:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">width</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Notice that the first dimension is the height, and the second dimension is the width. That is because the data is
+ordered by lines, then each line is ordered by pixels, and finally each pixel contains 3 byte values for RGB. Each
+colour is represented by an unsigned byte (<strong>numpy</strong> type <strong>uint8</strong>).</p>
+<p>Now let's fill the array with orange pixels (red=255, green=128, blue=0). We use slices to do this, the three values
+are <em>broadcast</em> across all the rows and columns of the array:</p>
+<div class="codehilite"><pre><span></span><span class="n">array</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<h2>Saving an RGB image using PIL</h2>
+<p>Now we can use <strong>fromarray</strong> to create a PIL image from the numpy array, and save it as a PNG file:</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;testrgb.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>In the code below we will:</p>
+<ul>
+<li>Create a 200 by 100 pixel array</li>
+<li>Use slice notation to fill left half of the array with orange</li>
+<li>Use slice notation to fill right half of the array with blue</li>
+</ul>
+<p>Here is the complete code:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">array</span><span class="p">[:,:</span><span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#Orange left side</span>
+<span class="n">array</span><span class="p">[:,</span><span class="mi">100</span><span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span>   <span class="c1">#Blue right side</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;testrgb.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>And here is the image:</p>
+<p><img alt="" src="/img/numpy/testrgb.png" /></p>
+<h2>Creating RGBA images</h2>
+<p>An RGBA image has 4 channels (unlike an RGB image that has only 3). The fourth channel is an alpha channel. An alpha
+value of 255 will make the pixel fully opaque, value 0 will make it fully transparent, values in between will make
+the pixel partly transparent.</p>
+<p>In the code below we create an RGBA image, initially setting the same blue and orange areas as before, with and alpha
+value of 255. We then loop over the image changing the alpha value of each pixel to be equal to its <strong>x</strong> coordinate.
+This means that the pixels on the left side of the image will be transparent, and the pixels at the right will be
+almost fully opaque. The transparency varies smoothly from left to right.:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">array</span><span class="p">[:,:</span><span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span> <span class="c1">#Orange left side</span>
+<span class="n">array</span><span class="p">[:,</span><span class="mi">100</span><span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span>   <span class="c1">#Blue right side</span>
+
+<span class="c1"># Set transparency depending on x position</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="n">array</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;testrgba.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>And here is the image:</p>
+<p><img alt="" src="/img/numpy/testrgba.png" /></p>
+<h2>Creating greyscale images</h2>
+<p>Greyscale images are handled slightly differently. Because there is only one channel, there is no need to create a 3
+dimensional array, you should use a 2 dimensional array instead:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="c1"># Set grey value to black or white depending on x position</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">16</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span> <span class="o">==</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">16</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="n">array</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">array</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;testgrey.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>In this case, we have created a chequerboard image:</p>
+<p><img alt="" src="/img/numpy/testgrey.png" /></p>
+<h2>Reading images</h2>
+<p>You can read an image using the PIL <strong>open</strong> function, and convert it to an array using the numpy <strong>array</strong> function. Here, we read the images that were created previously, and print their numpy shape:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;testrgba.png&#39;</span><span class="p">)</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>      <span class="c1"># (100, 200, 4)</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;testrgb.png&#39;</span><span class="p">)</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>      <span class="c1"># (100, 200, 3)</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;testgrey.png&#39;</span><span class="p">)</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>      <span class="c1"># (100, 200)</span>
+</pre></div>
+
+
+<p>You can manipulate the image data and write it back out to file. For example, this code inverts a greyscale image
+(swapping black and white). and saves it back:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;testgrey.png&#39;</span><span class="p">)</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">array</span>
+
+<span class="n">invimg</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="n">invimg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;testgrey-inverted.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Visit the PythonInformer <a href="http://pythoninformer.boards.net/board/6/numeric-python">Discussion Forum</a> for numeric Python.</p>
