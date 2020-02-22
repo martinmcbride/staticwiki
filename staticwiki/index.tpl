@@ -44,13 +44,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/python-language/contents/">Language</a>
+            <a class="nav-link" href="/python-language/">Language</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/python-libraries/contents/">Libraries</a>
+            <a class="nav-link" href="/python-libraries/">Libraries</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/programming-techniques/contents/">Techniques</a>
+            <a class="nav-link" href="/programming-techniques/">Techniques</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/contact/">Contact</a>
@@ -66,6 +66,12 @@
     </div>
   </nav>
 
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+      <p>
 <script type="text/javascript">
     google_ad_client = "ca-pub-3681179581819587";
     google_ad_slot = "2145523602";
@@ -76,11 +82,6 @@
 <script type="text/javascript"
 src="//pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
-
-  <!-- Page Content -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
         <h1 class="mt-5">{{title}}</h1>
         {{{author}}}
         {{{tags}}}

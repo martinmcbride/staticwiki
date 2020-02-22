@@ -56,7 +56,11 @@ def copytree(src, dst, symlinks=False, ignore=None):
         raise shutil.Error(errors)
 
 
-shutil.rmtree(OUT, ignore_errors=False, onerror=None)
+try:
+    shutil.rmtree(OUT, ignore_errors=False, onerror=None)
+except:
+    pass
+
 Path(OUT).mkdir(parents=True, exist_ok=True)
 copytree(os.path.join(BASE, 'static'), OUT)
 

@@ -4,6 +4,7 @@
 # License: MIT
 
 from create_pages import Page
+import os
 
 def create_tag_linkname(tag):
     return 'tag-' + tag.replace(' ', '-')
@@ -18,7 +19,7 @@ def create_tag_page(tag, pages):
     entries = []
     for page in pages:
         if tag in page.tags:
-            entries.append((page.title, '/' + page.path + '/' + page.filename + '/'))
+            entries.append((page.title, '/' + page.path + '/'))
     entries.sort(key=lambda x: x[0])
 
     content = ''
@@ -28,8 +29,7 @@ def create_tag_page(tag, pages):
             content += '<li><a href="' + p + '">' + t + '</a></li>'
         content += '</ol>'
 
-    tagpage = Page(path='tags',
-                      filename=name,
+    tagpage = Page(path=os.path.join('tags', name),
                       content=content,
                       title=title,
                       shorttitle=title,
@@ -61,8 +61,7 @@ def create_alltag_page(pages):
             content += '<li><a href="' + p + '">' + t + '</a></li>'
         content += '</ol>'
 
-    tagpage = Page(path='tags',
-                      filename=name,
+    tagpage = Page(path='tags/tags',
                       content=content,
                       title=title,
                       shorttitle=title,

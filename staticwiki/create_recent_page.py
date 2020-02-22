@@ -18,8 +18,7 @@ def create_recent_page(pages):
 
     entries = []
     for page in pages:
-        entries.append((page.title, '/' + os.path.join(page.path, page.filename), str(page.date)))
-        print(page.title, os.path.join(page.path, page.filename), str(page.date))
+        entries.append((page.title, '/' + os.path.join(page.path), str(page.date)))
     entries.sort(key=lambda x: x[2], reverse=True)
 
     content = ''
@@ -29,8 +28,7 @@ def create_recent_page(pages):
             content += '<li><a href="' + p + '">' + d + ' ' + t + '</a></li>'
         content += '</ol>'
 
-    recentpage = Page(path='',
-                      filename=name,
+    recentpage = Page(path='recent',
                       content=content,
                       title=title,
                       shorttitle=title,

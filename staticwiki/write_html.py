@@ -11,18 +11,14 @@ from create_tag_pages import create_tag_link, create_tag_linkname
 from create_category_pages import create_category_link, create_category_linkname
 
 def create_url(base, page):
-    if page.filename == 'index': # Home page stays in top level folder
-        directory = os.path.join(base, page.path)
-    else:
-        directory = os.path.join(base, page.path, page.filename)
-    #directory = os.path.join(base, page.path, page.filename)
+    directory = os.path.join(base, page.path)
     html_name = 'index.html'
     html_path = os.path.join(directory, html_name)
     return directory, html_path
 
 
 def create_link(page):
-    return '/' + page.path + '/' +  os.path.splitext(page.filename)[0] + '/'
+    return '/' + page.path + '/'
 
 
 def create_toc(page, pages):

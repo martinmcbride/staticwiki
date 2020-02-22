@@ -4,6 +4,7 @@
 # License: MIT
 
 from create_pages import Page
+import os
 
 def create_category_linkname(category):
     return 'category-' + category.replace(' ', '-')
@@ -18,7 +19,7 @@ def create_category_page(category, pages):
     entries = []
     for page in pages:
         if category in page.categories:
-            entries.append((page.title, '/' + page.path + '/' + page.filename + '/'))
+            entries.append((page.title, '/' + page.path + '/'))
     entries.sort(key=lambda x: x[0])
 
     content = ''
@@ -28,8 +29,7 @@ def create_category_page(category, pages):
             content += '<li><a href="' + p + '">' + t + '</a></li>'
         content += '</ol>'
 
-    categorypage = Page(path='categories',
-                      filename=name,
+    categorypage = Page(path=os.path.join('categories', name),
                       content=content,
                       title=title,
                       shorttitle=title,
@@ -61,8 +61,7 @@ def create_allcategory_page(pages):
             content += '<li><a href="' + p + '">' + t + '</a></li>'
         content += '</ol>'
 
-    categorypage = Page(path='categories',
-                      filename=name,
+    categorypage = Page(path='categories/categories',
                       content=content,
                       title=title,
                       shorttitle=title,
