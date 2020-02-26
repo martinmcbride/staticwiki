@@ -54,14 +54,14 @@ def write_html(template, base, page, pages):
         tags = '<br>Tags'
         for tag in page.tags:
             link = create_tag_link(create_tag_linkname(tag))
-            tags += ' <a href="' + link + '">' + tag + '</a>'
+            tags += ' <a href="' + link + '"><span class="badge badge-secondary">' + tag + '</span></a>'
 
     categories = ''
     if page.categories:
         categories = '<br>Categories'
         for category in page.categories:
             link = create_category_link(create_category_linkname(category))
-            categories += ' <a href="' + link + '">' + category + '</a>'
+            categories += ' <a href="' + link + '"><span class="badge badge-secondary">' + category + '</span></a>'
 
     toc = create_toc(page, pages)
 
