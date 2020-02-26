@@ -5,7 +5,7 @@
 
 from create_pages import convert_all
 from create_tag_pages import create_all_tags
-from create_recent_page import create_recent_page
+from create_recent_page import create_recent_page, create_index_page
 from create_category_pages import create_all_categories
 from write_html import write_html
 import shutil, os
@@ -71,8 +71,9 @@ pages = convert_all(os.path.join(BASE, 'content'))
 tagpages = create_all_tags(pages)
 categorypages = create_all_categories(pages)
 recentpages = create_recent_page(pages)
+allpages = create_index_page(pages)
 
-for s in [pages, tagpages, categorypages, recentpages]:
+for s in [pages, tagpages, categorypages, recentpages, allpages]:
     for page in s:
         write_html(template, OUT, page, pages)
 

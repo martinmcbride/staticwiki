@@ -99,6 +99,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
     <h4>See also</h4>
     <ol class="list-unstyled">
       <li><a href="/recent/">Recent articles</a></li>
+      <li><a href="/all/">All articles</a></li>
       <li><a href="/tags/tags/">All tags</a></li>
       <li><a href="/categories/categories/">All categories</a></li>
     </ol>

@@ -55,11 +55,19 @@ def create_alltag_page(pages):
     entries.sort(key=lambda x: x[0])
 
     content = ''
-    if entries:
-        content += '<ol class="list-unstyled">'
-        for t, p in entries:
-            content += '<li><a href="' + p + '">' + t + '</a></li>'
-        content += '</ol>'
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    for initial in alphabet:
+        initial_entries = [e for e in entries if e[0][0].upper()==initial]
+        if initial_entries:
+            content += '<p><h3>' + initial + '</h3>'
+            for t, p in initial_entries:
+                content += '<a href="' + p + '"><span class="badge badge-secondary">' + t + '</span></a> '
+
+    initial_entries = [e for e in entries if e[0][0].upper() not in alphabet]
+    if initial_entries:
+        content += '<p><h3>Other</h3>'
+        for t, p in initial_entries:
+            content += '<a href="' + p + '"><span class="badge badge-secondary">' + t + '</span></a> '
 
     tagpage = Page(path='tags/tags',
                       content=content,
