@@ -43,8 +43,6 @@ def create_tag_page(tag, pages):
     return tagpage
 
 def create_alltag_page(pages):
-    title = 'All tags'
-    name = 'tags'
 
     entry_set = set()
     for page in pages:
@@ -53,6 +51,7 @@ def create_alltag_page(pages):
 
     entries = list(entry_set)
     entries.sort(key=lambda x: x[0])
+    title = 'All tags (' + str(len(entries)) + ')'
 
     content = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

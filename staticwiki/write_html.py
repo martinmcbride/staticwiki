@@ -17,31 +17,51 @@ def create_url(base, page):
     return directory, html_path
 
 
-def create_link(page):
-    return '/' + page.path + '/'
+def create_link(path):
+    return '/' + path + '/'
 
 
 def create_toc(page, pages):
     if not page.series:
-        return ''
+        return '', '', ''
 
     contents = []
     for p in pages:
         if p.series == page.series:
-            html_path = create_link(p)
-            contents.append((p.shorttitle, p.series_weight, html_path, p.heading))
+            contents.append((p.shorttitle, p.series_weight, p.path, p.heading))
 
     contents.sort(key=lambda x: x[1])
+    current_page_index = -1
 
     out = '<section class="sidebar-module"><h4>' + page.series + '</h4><ol class="list-unstyled">'
-    for shorttitle, series_weight, path, heading in contents:
-        if heading:
-            out += '<li><a href="' + path + '">' + shorttitle + '</a></li>'
+    for i, p in enumerate(contents):
+        shorttitle, series_weight, path, heading = p
+        html_path = create_link(path)
+        if page.path!=path:
+            if heading:
+                out += '<li><a href="' + html_path + '">' + shorttitle + '</a></li>'
+            else:
+                out += '<li><a href="' + html_path + '"> - ' + shorttitle + '</a></li>'
         else:
-            out += '<li><a href="' + path + '"> - ' + shorttitle + '</a></li>'
+            current_page_index = i
+            if heading:
+                out += '<li>' + shorttitle + '</li>'
+            else:
+                out += '<li> - ' + shorttitle + '</li>'
     out += '</ol></section>'
-    return out
 
+    prev = ''
+    next = ''
+    if current_page_index > 0:
+        prev = '<a href="' + create_link(contents[current_page_index-1][2]) + '"><button type="button" class="btn btn-primary">Previous</button></a>'
+    if 0 <= current_page_index < (len(contents) - 1):
+        next = '<a href="' + create_link(contents[current_page_index + 1][2]) + '"><button type="button" class="btn btn-primary float-right">Next</button></a>'
+    return out, prev, next
+
+def create_prev_next(prev, next):
+    if not prev and not next:
+        return ''
+    return prev + '' + next
 
 def write_html(template, base, page, pages):
 
@@ -63,10 +83,12 @@ def write_html(template, base, page, pages):
             link = create_category_link(create_category_linkname(category))
             categories += ' <a href="' + link + '"><span class="badge badge-secondary">' + category + '</span></a>'
 
-    toc = create_toc(page, pages)
+    toc, prev, next = create_toc(page, pages)
+
+    prevnext = create_prev_next(prev, next)
 
     # Substitute page values
-    params = dict(title=page.title, content=page.content, author=author, toc=toc, tags=tags, categories = categories)
+    params = dict(title=page.title, content=page.content, author=author, toc=toc, tags=tags, categories=categories, prevnext=prevnext)
     html = pystache.render(template, params)
 
     directory, html_path = create_url(base, page)

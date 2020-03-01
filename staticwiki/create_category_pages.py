@@ -43,8 +43,6 @@ def create_category_page(category, pages):
     return categorypage
 
 def create_allcategory_page(pages):
-    title = 'All categories'
-    name = 'categories'
 
     entry_set = set()
     for page in pages:
@@ -53,6 +51,7 @@ def create_allcategory_page(pages):
 
     entries = list(entry_set)
     entries.sort(key=lambda x: x[0])
+    title = 'All categories (' + str(len(entries)) + ')'
 
     content = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

@@ -91,7 +91,9 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
     </div>
     <div class="row">
       <div class="col-lg-9">
+        <p></p>
         {{{content}}}
+        {{{prevnext}}}
       </div>
       <div class="col-lg-3">
     {{{toc}}}

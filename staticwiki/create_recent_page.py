@@ -14,18 +14,18 @@ def get_month_year(date):
 
 
 def create_recent_page(pages):
-    title = 'Recent articles'
-
     entries = []
     for page in pages:
         entries.append((page.title, '/' + os.path.join(page.path), str(page.date)))
     entries.sort(key=lambda x: x[2], reverse=True)
+    entries = entries[:50]
+    title = 'Most recent ' + str(len(entries)) + ' articles'
 
     content = ''
     month = '0000-00'
     first = True
     if entries:
-        for t, p, d in entries[:30]:
+        for t, p, d in entries:
             new = month[:7]!=d[:7]
             if new:
                 month = d[:8]
@@ -51,12 +51,12 @@ def create_recent_page(pages):
     return [recentpage]
 
 def create_index_page(pages):
-    title = 'All articles'
-
     entries = []
     for page in pages:
         entries.append((page.title, '/' + os.path.join(page.path)))
     entries.sort(key=lambda x: x[0])
+
+    title = 'All articles (' + str(len(entries)) + ')'
 
     content = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
